@@ -413,11 +413,17 @@ if(__name__ == "__main__"):
     	seed = int(sys.argv[2])
     except:
     	seed = 1
+
+    try:
+        model_to_use = sys.argv[3]
+    except:
+        model_to_use = "whitman"
     
     np.random.seed(seed) # seed for reproducibility
    
    	# this is where data directory and model directory are determined
-    text_list = ("/content/poetry-generation/data/whitman/input.txt","/content/whitman_model")
+    
+    text_list = ("/content/poetry-generation/data/" + model_to_use + "/input.txt","/content/" + model_to_use + "_model")
     t = text_list[0] #THIS TEXT IS THE VOCAB!
     save_dir = text_list[1] #THIS IS THE MODEL DIRECTORY
     text = open(t)
