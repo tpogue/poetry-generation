@@ -509,7 +509,7 @@ if(__name__ == "__main__"):
     wordPools = [set([]) for n in range(4)]
     poem = genPoem(save_dir,topic,width,wordPools)
     print(poem)
-    with open("/content/poetry-generation/output_poems\%s-%i.txt"%(topic,seed), "w") as text_file:
+    with open("/content/poetry-generation/output_poems/%s-%i.txt"%(topic,seed), "w") as text_file:
         print("(saved in output_poems)")
         print("\n")
         print(topic)

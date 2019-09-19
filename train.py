@@ -1,4 +1,3 @@
-%%writefile poetry-generation/train.py
 from __future__ import print_function
 import numpy as np
 import tensorflow as tf
