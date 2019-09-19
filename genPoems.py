@@ -12,12 +12,15 @@ import itertools
 from numpy.random import choice
 from collections import defaultdict
 from gensim.models.keyedvectors import KeyedVectors
+
 import string
 import re
 import collections
 import sys
 import pickle
 import getopt
+
+from glob import glob
 
 def isFitPattern(pattern,stress_num):
     if(len(pattern)+stress_num>10):
@@ -164,7 +167,7 @@ def simple_clean(string):
         return string.strip().lower()
 
 def dynamic_rhyme(prompt, words, word2rhyme, rhyme2words, vocab):
-    common = pickle.load(open("CommonRhymes.pkl","rb"))
+    common = pickle.load(open("/content/poetry-generation/CommonRhymes.pkl","rb"))
     wors = [word for word in words if word in glove_model.vocab]
     # topic-representation is avg. of its words' reps
     prompt_words = prompt.split()
@@ -398,8 +401,11 @@ def genPoem(save_dir, topic, width, wordPools):
 
 if(__name__ == "__main__"):
 
-	# load glove to a gensim model
-    glove_model = KeyedVectors.load_word2vec_format('./storyline_for_reference/glove.6B.300d.word2vec.txt',binary=False)
+    print(os.path.dirname(os.path.realpath(__file__)))
+  
+    # load glove to a gensim model
+    file_path = [f for f in glob("/content/drive/My Drive/*.txt", recursive=True)][0]
+    glove_model = KeyedVectors.load_word2vec_format(file_path,binary=False)
     
     # system arguments
     topic = sys.argv[1]
@@ -411,12 +417,12 @@ if(__name__ == "__main__"):
     np.random.seed(seed) # seed for reproducibility
    
    	# this is where data directory and model directory are determined
-    text_list = ("data\whitman\input.txt","whitman_model")
+    text_list = ("/content/poetry-generation/data/whitman/input.txt","/content/whitman_model")
     t = text_list[0] #THIS TEXT IS THE VOCAB!
     save_dir = text_list[1] #THIS IS THE MODEL DIRECTORY
     text = open(t)
     text = text.read()
-    with open("./cmudict-0.7b.txt") as f:
+    with open("/content/poetry-generation/cmudict-0.7b.txt", "r", encoding = "latin-1") as f:
         lines = [line.rstrip("\n").split() for line in f if (";;;" not in line)]
     dictMeters = {}
     for i in range(len(lines)):
@@ -467,7 +473,7 @@ if(__name__ == "__main__"):
     dict_M = {}
     dict_S = {}
     dict_R = {}
-    with open("./cmudict-0.7b.txt") as f:
+    with open("/content/poetry-generation/cmudict-0.7b.txt", "r", encoding = "latin-1") as f:
         lines = [line.rstrip("\n").split() for line in f if (";;;" not in line)]
         for line in lines:
             word = line[0].lower()
@@ -502,7 +508,8 @@ if(__name__ == "__main__"):
     width = 20
     wordPools = [set([]) for n in range(4)]
     poem = genPoem(save_dir,topic,width,wordPools)
-    with open("./output_poems\%s-%i.txt"%(topic,poem_ind), "w") as text_file:
+    print(poem)
+    with open("/content/poetry-generation/output_poems\%s-%i.txt"%(topic,seed), "w") as text_file:
         print("(saved in output_poems)")
         print("\n")
         print(topic)

@@ -1,3 +1,4 @@
+%%writefile poetry-generation/train.py
 from __future__ import print_function
 import numpy as np
 import tensorflow as tf
@@ -9,6 +10,9 @@ import os
 from six.moves import cPickle
 from utils import TextLoader
 from model import Model
+
+from google.colab import drive
+drive.mount('/content/drive')
 
 '''this is the training script. starts with a whole bunch of arguments, then trains (and saves) a model'''                
 

@@ -1,3 +1,4 @@
+%%writefile poetry-generation/utils.py
 # -*- coding: utf-8 -*-
 import os
 import codecs
@@ -8,6 +9,11 @@ import re
 import itertools
 import nltk
 from gensim.models.keyedvectors import KeyedVectors
+from gensim.test.utils import datapath
+from glob import glob
+
+from google.colab import drive
+drive.mount('/content/drive')
 
 '''here be utilities. which really means the textloader object to help with training'''                
 
@@ -120,7 +126,8 @@ class TextLoader():
     
     def get_embeddings(self):
         '''get GloVe embeddings, or uses a (single!) random vector if one can't be found'''
-        glove_model = KeyedVectors.load_word2vec_format('./storyline_for_reference/glove.6B.300d.word2vec.txt', binary=False)
+        file_path = [f for f in glob("/content/drive/My Drive/*.txt", recursive=True)][0]
+        glove_model = KeyedVectors.load_word2vec_format(datapath(file_path), binary=False)
         embeddings = np.zeros((self.vocab_size, 300))
 
         rand = np.random.normal(0,.001, 300)
