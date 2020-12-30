@@ -106,9 +106,9 @@ def train(args):
         assert saved_vocab==data_loader.vocab, "Data and loaded model disagree on dictionary mappings!"
 
     '''idk what the pickle.dump does'''        
-    with open(os.path.join(args.save_dir, 'config.pkl'), 'wb') as f:
+    with open(os.path.join(args.save_dir, 'config.pkl'), 'wb+') as f:
         cPickle.dump(args, f)
-    with open(os.path.join(args.save_dir, 'words_vocab.pkl'), 'wb') as f:
+    with open(os.path.join(args.save_dir, 'words_vocab.pkl'), 'wb+') as f:
         cPickle.dump((data_loader.words, data_loader.vocab), f)
   
     '''start up the model'''        
